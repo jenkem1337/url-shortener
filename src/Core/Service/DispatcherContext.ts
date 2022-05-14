@@ -1,14 +1,22 @@
-import BaseDispatcherContext from "./BaseDispatcherContext";
-import Command from "./Command/Command";
-import Query from "./Query/Query";
+import IRequestStrategy from './DispatcherStrategy/IRequestStrategy';
 
-export default class DispatcherContext extends BaseDispatcherContext{
+export default class DispatcherContext {
+    private strategyMap: Map<string, IRequestStrategy>
 
-    sendQuery(obj: Query):any{
-        return this.queryHandler.dispatch(obj)
+
+    public sendToDispatcher(strategyName,obj: Object){
+        if(!this.strategyMap.has(strategyName)){
+            throw new Error('this strategy doesnt exist')
+        }
+
+        let strategy = <IRequestStrategy> this.strategyMap.get(strategyName)
+        return strategy.executeStrategy(obj)
+    }
+
+    setStrategies(mapObject: Map<string, IRequestStrategy>){
+        this.strategyMap = mapObject
 
     }
-    sendCommand(obj: Command):any{
-        return this.commandHandler.dispatch(obj)
-    }
+    
+    
 }

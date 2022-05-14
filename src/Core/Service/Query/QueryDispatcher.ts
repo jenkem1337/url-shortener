@@ -1,16 +1,16 @@
-import BaseDispatcherContext from "../BaseDispatcherContext"
+import BaseMediatorComponent from "../BaseMediatorCompnent"
 import IMediator from "../IMediator"
 import IQueryHandler from "./IQueryHandler"
 import Query from "./Query"
 
 export default class QueryDispatcher implements IMediator{
     private map: Map<string, IQueryHandler<Query, any>> = new Map<string, IQueryHandler<Query, any>>()
-    private baseDispatcherContext:BaseDispatcherContext
+    private baseMediatorComponent:BaseMediatorComponent
     
-    constructor(baseDispatcherContext:BaseDispatcherContext ){
+    constructor(baseMediatorComponent:BaseMediatorComponent ){
         
-        this.baseDispatcherContext = baseDispatcherContext
-        this.baseDispatcherContext.setQueryDispatcher(this)
+        this.baseMediatorComponent = baseMediatorComponent
+        this.baseMediatorComponent.setQueryDispatcher(this)
     }
     
     dispatch(query: Query): any {

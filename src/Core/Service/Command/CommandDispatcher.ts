@@ -1,16 +1,16 @@
 import ICommandHandler from './ICommandHandler';
 import Command from './Command';
 import IMediator from '../IMediator';
-import BaseDispatcherContext from '../BaseDispatcherContext';
+import BaseMediatorComponent from '../BaseMediatorCompnent';
 
 export default class CommandDispatcher implements IMediator{
     
     private map: Map<string, ICommandHandler<Command,any>> = new Map<string, ICommandHandler<Command,any>>()
-    private baseDispatcherContext:BaseDispatcherContext
+    private baseMediatorComponent:BaseMediatorComponent
     
-    constructor(baseDispatcherContext:BaseDispatcherContext){
-        this.baseDispatcherContext = baseDispatcherContext
-        this.baseDispatcherContext.setCommandDispatcher(this)
+    constructor(baseMediatorComponent:BaseMediatorComponent){
+        this.baseMediatorComponent = baseMediatorComponent
+        this.baseMediatorComponent.setCommandDispatcher(this)
     }
     
     dispatch(command: Command): any {

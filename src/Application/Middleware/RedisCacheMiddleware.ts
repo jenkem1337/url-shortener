@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import BaseDispatcherContext from '../../Core/Service/BaseDispatcherContext';
 import FindCachedUrlByUrlCodeQuery from '../../Core/Service/Query/RequestModel/FindCachedUrlByUrlCodeQuery';
 import HttpStatusCode from '../../Core/Service/ResponseModel/HttpStatus';
+import DispatcherContext from '../../Core/Service/DispatcherContext';
+import QueryRequestStrategy from '../../Core/Service/DispatcherStrategy/QueryRequestStrategy';
 
 export default class RedisCacheMiddleware{
-    private dispatcherContext: BaseDispatcherContext
+    private dispatcherContext: DispatcherContext
     
-    public constructor(dispatcherContext: BaseDispatcherContext){
+    public constructor(dispatcherContext: DispatcherContext){
         this.dispatcherContext = dispatcherContext
     }
 
@@ -14,7 +15,7 @@ export default class RedisCacheMiddleware{
         const {url_code} = req.params
         let query = new FindCachedUrlByUrlCodeQuery()
         query.setUrlCode(url_code)
-        const url = await this.dispatcherContext.sendQuery(query)
+        const url = await this.dispatcherContext.sendToDispatcher(QueryRequestStrategy.name ,query)
         
         if(url){
             res.status(HttpStatusCode.OK).json(url)

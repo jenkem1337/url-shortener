@@ -10,25 +10,35 @@ export default class Url extends BaseEntity{
 
     private shortUrl:string
 
-    private howMuchTimeClicked:number
+    private howManyTimeClicked:number
     
-    public constructor(id:string,longUrl: string, urlCode:string, shortUrl:string, howMuchTimeClicked:number ,whenCreated: Date){
+    public constructor(id:string,longUrl: string, urlCode:string, shortUrl:string, howManyTimeClicked:number ,whenCreated: Date){
         super(id, whenCreated)
-        if(!longUrl){
-            throw new LongUrlInputEmptyException()
-        }
-        if(!validator.isURL(longUrl)){
-            throw new LongUrlDoesntValidException()
-        }
+        
+        this.isLongUrlEmpty(longUrl)
+        this.isLongUrlValid(longUrl)
+
         this.longUrl = longUrl 
         this.urlCode = urlCode
         this.shortUrl = shortUrl
-        this.howMuchTimeClicked = howMuchTimeClicked
+        this.howManyTimeClicked = howManyTimeClicked
     }
 
-    
+    private isLongUrlValid(longUrl){
+        try {
+            new URL(longUrl)
+        } catch (error) {
+            throw new LongUrlDoesntValidException()
+        }
+    }
+
+    private isLongUrlEmpty(longUrl){
+        if(!longUrl) throw new LongUrlInputEmptyException
+    }
+
+
     public incrementClickCounter():void{
-        this.howMuchTimeClicked += 1
+        this.howManyTimeClicked += 1
     }
 
 
@@ -38,7 +48,7 @@ export default class Url extends BaseEntity{
 
 
     public getHowMuchTimeClicked():number{
-        return this.howMuchTimeClicked
+        return this.howManyTimeClicked
     }
 
     public getShortUrl():string{

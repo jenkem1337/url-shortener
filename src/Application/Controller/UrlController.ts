@@ -6,9 +6,7 @@ import FindAllUrlQuery from '../../Core/Service/Query/RequestModel/FindAllQuery'
 import ApiResponse from '../../Core/Service/ResponseModel/ApiResponse';
 import RedirectionToOriginalUrlQuery from '../../Core/Service/Query/RequestModel/RedirectionToOriginalUrlQuery';
 import RedirectLongUrlResponse from '../../Core/Service/ResponseModel/RedirectLongUrlResponse';
-import DispatcherContext from '../../Core/Service/DispatcherContext';
-import QueryRequestStrategy from '../../Core/Service/DispatcherStrategy/QueryRequestStrategy';
-import CommandRequestStrategy from '../../Core/Service/DispatcherStrategy/CommandRequestStrategy';
+import DispatcherContext from '../../Core/Service/DispatcherStrategy/DispatcherContext';
 
 export default class UrlController{
     private dispatcherContext: DispatcherContext
@@ -19,7 +17,7 @@ export default class UrlController{
 
     public async findAll(req:Request, res:Response){
         let query = new FindAllUrlQuery()
-        let  response = <ApiResponse> await this.dispatcherContext.sendToDispatcher(QueryRequestStrategy.name ,query)
+        let  response = <ApiResponse> await this.dispatcherContext.sendToDispatcher(query)
         
         res
             .status(response.getStatusCode())
@@ -35,7 +33,7 @@ export default class UrlController{
         creationalCommand.setUrlCode(shortid.generate())
         creationalCommand.setShortUrl(req.protocol + "://" + req.headers.host + "/api/v1/" + creationalCommand.getUrlCode() )
         
-        let response  = <ApiResponse> await this.dispatcherContext.sendToDispatcher(CommandRequestStrategy.name ,creationalCommand)
+        let response  = <ApiResponse> await this.dispatcherContext.sendToDispatcher(creationalCommand)
         res
             .status(response.getStatusCode())
             .send(response.getResult())
@@ -48,7 +46,7 @@ export default class UrlController{
         const urlCodeQuery = new UrlCodeQuery()
         urlCodeQuery.setUrlCode(url_code)
         
-        let response = <ApiResponse> await this.dispatcherContext.sendToDispatcher(QueryRequestStrategy.name, urlCodeQuery)
+        let response = <ApiResponse> await this.dispatcherContext.sendToDispatcher(urlCodeQuery)
         
         res
             .status(response.getStatusCode())
@@ -62,7 +60,7 @@ export default class UrlController{
         const query = new RedirectionToOriginalUrlQuery()
         query.setUrlCode(url_code)
 
-        let response = <ApiResponse> await this.dispatcherContext.sendToDispatcher(QueryRequestStrategy.name ,query)
+        let response = <ApiResponse> await this.dispatcherContext.sendToDispatcher(query)
         
         let result = <RedirectLongUrlResponse> response.getResult()
         if(result instanceof RedirectLongUrlResponse){

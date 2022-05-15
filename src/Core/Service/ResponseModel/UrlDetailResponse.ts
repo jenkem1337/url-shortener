@@ -1,13 +1,13 @@
 export default class UrlDetailResponse{
     private shortUrl: string
     private longUrl:string
-    private howMuchTimeClicked:number
+    private howManyTimeClicked:number
 
     constructor(shortUrl: string,
         longUrl:string,
-        howMuchTimeClicked:number){
+        howManyTimeClicked:number){
             this.shortUrl= shortUrl
             this.longUrl = longUrl
-            this.howMuchTimeClicked = howMuchTimeClicked
+            this.howManyTimeClicked = howManyTimeClicked
         }
 }

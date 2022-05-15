@@ -1,7 +1,7 @@
 import Redis  from 'ioredis';
 import UrlController from '../../Controller/UrlController';
 import IFactory from '../IFactory';
-import DispatcherContext from '../../../Core/Service/DispatcherContext';
+import DispatcherContext from '../../../Core/Service/DispatcherStrategy/DispatcherContext';
 import QueryDispatcher from '../../../Core/Service/Query/QueryDispatcher';
 import CommandDispatcher from '../../../Core/Service/Command/CommandDispatcher';
 import FindAllUrlQueryHandler from '../../../Core/Service/Query/Handler/FindAllUrlQueryHandler';
@@ -18,11 +18,12 @@ import RedisRepository from '../../../Infrastructure/Data_Access/Repository/Redi
 import IRequestStrategy from '../../../Core/Service/DispatcherStrategy/IRequestStrategy';
 import QueryRequestStrategy from '../../../Core/Service/DispatcherStrategy/QueryRequestStrategy';
 import CommandRequestStrategy from '../../../Core/Service/DispatcherStrategy/CommandRequestStrategy';
+import Query from '../../../Core/Service/Query/Query';
+import Command from '../../../Core/Service/Command/Command';
 
 export default class UrlControllerFactory implements IFactory<UrlController>{
   
     public createInstance():UrlController{
-        let dispatcherContext = new DispatcherContext()
 
         let queryRequestStrategy = new QueryRequestStrategy()
         let commandRequestStrategy = new CommandRequestStrategy()
@@ -30,21 +31,22 @@ export default class UrlControllerFactory implements IFactory<UrlController>{
         let queryDispatcher = new QueryDispatcher(queryRequestStrategy)
         let commandDispatcher = new CommandDispatcher(commandRequestStrategy)
 
-        dispatcherContext.setStrategies(new Map<string, IRequestStrategy>([
+
+        
+
+        commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(new UrlFactory()), new UrlFactory()))
+          
+        queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory())))
+                        .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository(new UrlFactory())))
+                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(new UrlFactory()), new RedisRepository(new Redis())))
+
+        return new UrlController(new DispatcherContext(new Map<string, IRequestStrategy>([
             [
-                QueryRequestStrategy.name, queryRequestStrategy
+                Query.name, queryRequestStrategy
             ],
             [
-                CommandRequestStrategy.name, commandRequestStrategy
+                Command.name , commandRequestStrategy
             ]
-        ]))
-
-        commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(), new UrlFactory()))
-          
-        queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository()))
-                        .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository()))
-                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(), new RedisRepository(new Redis())))
-
-        return new UrlController(dispatcherContext)
+        ])))
     }
 }

@@ -22,7 +22,7 @@ export default class CreateNewShhortUrlCommandHandler implements ICommandHandler
     async execute(command: UrlCreationCommand): Promise<ApiResponse> {
         try {
             let url = this.urlFactory.createInstance(
-                uuid(), command.getLongUrl(), command.getUrlCode(), command.getShortUrl(), new Date())
+                uuid(), command.getLongUrl(), command.getUrlCode(), command.getShortUrl(), 0 ,new Date())
             
             await this.urlRepository.saveAndChanges(url)
             

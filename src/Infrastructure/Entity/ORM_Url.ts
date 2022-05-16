@@ -1,7 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
+import {Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class ORM_Url extends BaseEntity{
+export default class ORM_Url{
     @PrimaryColumn()
     public id:string
 
@@ -21,7 +21,6 @@ export default class ORM_Url extends BaseEntity{
     public created_at: Date;
     
     public constructor(id:string ,longUrl: string, urlcode:string, shortUrl:string, howMuchTimeClicked,created_at: Date){
-        super()
         this.id = id
         this.longUrl = longUrl 
         this.urlCode = urlcode

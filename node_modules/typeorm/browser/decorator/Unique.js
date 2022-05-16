@@ -1,14 +1,29 @@
 import { getMetadataArgsStorage } from "../globals";
+import { ObjectUtils } from "../util/ObjectUtils";
 /**
  * Composite unique constraint must be set on entity classes and must specify entity's fields to be unique.
  */
-export function Unique(nameOrFields, maybeFields) {
-    var name = typeof nameOrFields === "string" ? nameOrFields : undefined;
-    var fields = typeof nameOrFields === "string" ? maybeFields : nameOrFields;
+export function Unique(nameOrFieldsOrOptions, maybeFieldsOrOptions, maybeOptions) {
+    const name = typeof nameOrFieldsOrOptions === "string"
+        ? nameOrFieldsOrOptions
+        : undefined;
+    const fields = typeof nameOrFieldsOrOptions === "string"
+        ? maybeFieldsOrOptions
+        : nameOrFieldsOrOptions;
+    let options = ObjectUtils.isObject(nameOrFieldsOrOptions) &&
+        !Array.isArray(nameOrFieldsOrOptions)
+        ? nameOrFieldsOrOptions
+        : maybeOptions;
+    if (!options)
+        options =
+            ObjectUtils.isObject(nameOrFieldsOrOptions) &&
+                !Array.isArray(maybeFieldsOrOptions)
+                ? maybeFieldsOrOptions
+                : maybeOptions;
     return function (clsOrObject, propertyName) {
-        var columns = fields;
+        let columns = fields;
         if (propertyName !== undefined) {
-            switch (typeof (propertyName)) {
+            switch (typeof propertyName) {
                 case "string":
                     columns = [propertyName];
                     break;
@@ -17,10 +32,13 @@ export function Unique(nameOrFields, maybeFields) {
                     break;
             }
         }
-        var args = {
-            target: propertyName ? clsOrObject.constructor : clsOrObject,
+        const args = {
+            target: propertyName
+                ? clsOrObject.constructor
+                : clsOrObject,
             name: name,
-            columns: columns,
+            columns,
+            deferrable: options ? options.deferrable : undefined,
         };
         getMetadataArgsStorage().uniques.push(args);
     };

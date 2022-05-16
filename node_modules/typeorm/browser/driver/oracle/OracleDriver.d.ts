@@ -1,8 +1,9 @@
 import { Driver } from "../Driver";
+import { CteCapabilities } from "../types/CteCapabilities";
 import { OracleQueryRunner } from "./OracleQueryRunner";
 import { ObjectLiteral } from "../../common/ObjectLiteral";
 import { ColumnMetadata } from "../../metadata/ColumnMetadata";
-import { Connection } from "../../connection/Connection";
+import { DataSource } from "../../data-source/DataSource";
 import { RdbmsSchemaBuilder } from "../../schema-builder/RdbmsSchemaBuilder";
 import { OracleConnectionOptions } from "./OracleConnectionOptions";
 import { MappedColumnTypes } from "../types/MappedColumnTypes";
@@ -22,7 +23,7 @@ export declare class OracleDriver implements Driver {
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
     /**
      * Underlying oracle library.
      */
@@ -56,6 +57,10 @@ export declare class OracleDriver implements Driver {
      * Indicates if tree tables are supported by this driver.
      */
     treeSupport: boolean;
+    /**
+     * Represent transaction support by this driver
+     */
+    transactionSupport: "nested";
     /**
      * Gets list of supported column data types by a driver.
      *
@@ -102,7 +107,8 @@ export declare class OracleDriver implements Driver {
      * > If COMPATIBLE is set to a value of 12.2 or higher, then names must be from 1 to 128 bytes long with these exceptions
      */
     maxAliasLength: number;
-    constructor(connection: Connection);
+    cteCapabilities: CteCapabilities;
+    constructor(connection: DataSource);
     /**
      * Performs connection to the database.
      * Based on pooling options, it can either create connection immediately,

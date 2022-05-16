@@ -3,6 +3,7 @@ import { EntityMetadata } from "./EntityMetadata";
 import { NamingStrategyInterface } from "../naming-strategy/NamingStrategyInterface";
 import { ColumnMetadata } from "./ColumnMetadata";
 import { UniqueMetadataArgs } from "../metadata-args/UniqueMetadataArgs";
+import { DeferrableType } from "./types/DeferrableType";
 /**
  * Unique metadata contains all information about table's unique constraints.
  */
@@ -24,15 +25,19 @@ export declare class UniqueMetadata {
      */
     columns: ColumnMetadata[];
     /**
+     * Indicate if unique constraints can be deferred.
+     */
+    deferrable?: DeferrableType;
+    /**
      * User specified unique constraint name.
      */
     givenName?: string;
     /**
      * User specified column names.
      */
-    givenColumnNames?: ((object?: any) => (any[] | {
+    givenColumnNames?: ((object?: any) => any[] | {
         [key: string]: number;
-    })) | string[];
+    }) | string[];
     /**
      * Final unique constraint name.
      * If unique constraint name was given by a user then it stores normalized (by naming strategy) givenName.

@@ -1,4 +1,4 @@
-import { Connection } from "../../connection/Connection";
+import { DataSource } from "../../data-source/DataSource";
 import { SqliteConnectionOptions } from "./SqliteConnectionOptions";
 import { ColumnType } from "../types/ColumnTypes";
 import { QueryRunner } from "../../query-runner/QueryRunner";
@@ -16,7 +16,7 @@ export declare class SqliteDriver extends AbstractSqliteDriver {
      * SQLite underlying library.
      */
     sqlite: any;
-    constructor(connection: Connection);
+    constructor(connection: DataSource);
     /**
      * Closes connection with database.
      */
@@ -31,6 +31,11 @@ export declare class SqliteDriver extends AbstractSqliteDriver {
         precision?: number | null;
         scale?: number;
     }): string;
+    afterConnect(): Promise<void>;
+    /**
+     * For SQLite, the database may be added in the decorator metadata. It will be a filepath to a database file.
+     */
+    buildTableName(tableName: string, _schema?: string, database?: string): string;
     /**
      * Creates connection with the database.
      */
@@ -43,4 +48,12 @@ export declare class SqliteDriver extends AbstractSqliteDriver {
      * Auto creates database directory if it does not exist.
      */
     protected createDatabaseDirectory(fullPath: string): Promise<void>;
+    /**
+     * Performs the attaching of the database files. The attachedDatabase should have been populated during calls to #buildTableName
+     * during EntityMetadata production (see EntityMetadata#buildTablePath)
+     *
+     * https://sqlite.org/lang_attach.html
+     */
+    protected attachDatabases(): Promise<void>;
+    protected getMainDatabasePath(): string;
 }

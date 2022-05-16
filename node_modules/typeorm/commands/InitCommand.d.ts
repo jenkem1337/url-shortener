@@ -6,8 +6,6 @@ export declare class InitCommand implements yargs.CommandModule {
     command: string;
     describe: string;
     builder(args: yargs.Argv): yargs.Argv<{
-        c: string;
-    } & {
         n: unknown;
     } & {
         db: unknown;
@@ -17,17 +15,19 @@ export declare class InitCommand implements yargs.CommandModule {
         docker: unknown;
     } & {
         pm: string;
+    } & {
+        ms: string;
     }>;
     handler(args: yargs.Arguments): Promise<void>;
-    protected static executeCommand(command: string): Promise<string>;
+    protected static executeCommand(command: string, cwd: string): Promise<string>;
     /**
      * Gets contents of the ormconfig file.
      */
-    protected static getOrmConfigTemplate(database: string): string;
+    protected static getAppDataSourceTemplate(isEsm: boolean, database: string): string;
     /**
      * Gets contents of the ormconfig file.
      */
-    protected static getTsConfigTemplate(): string;
+    protected static getTsConfigTemplate(esmModule: boolean): string;
     /**
      * Gets contents of the .gitignore file.
      */
@@ -39,19 +39,19 @@ export declare class InitCommand implements yargs.CommandModule {
     /**
      * Gets contents of the route file (used when express is enabled).
      */
-    protected static getRoutesTemplate(): string;
+    protected static getRoutesTemplate(isEsm: boolean): string;
     /**
      * Gets contents of the user controller file (used when express is enabled).
      */
-    protected static getControllerTemplate(): string;
+    protected static getControllerTemplate(isEsm: boolean): string;
     /**
      * Gets contents of the main (index) application file.
      */
-    protected static getAppIndexTemplate(express: boolean): string;
+    protected static getAppIndexTemplate(express: boolean, isEsm: boolean): string;
     /**
      * Gets contents of the new package.json file.
      */
-    protected static getPackageJsonTemplate(projectName?: string): string;
+    protected static getPackageJsonTemplate(projectName?: string, projectIsEsm?: boolean): string;
     /**
      * Gets contents of the new docker-compose.yml file.
      */
@@ -65,5 +65,5 @@ export declare class InitCommand implements yargs.CommandModule {
     /**
      * Appends to a given package.json template everything needed.
      */
-    protected static appendPackageJson(packageJsonContents: string, database: string, express: boolean): string;
+    protected static appendPackageJson(packageJsonContents: string, database: string, express: boolean, projectIsEsm: boolean): string;
 }

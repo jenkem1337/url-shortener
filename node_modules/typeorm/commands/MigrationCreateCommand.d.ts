@@ -5,17 +5,10 @@ import * as yargs from "yargs";
 export declare class MigrationCreateCommand implements yargs.CommandModule {
     command: string;
     describe: string;
-    aliases: string;
     builder(args: yargs.Argv): yargs.Argv<{
-        c: string;
-    } & {
-        n: unknown;
-    } & {
-        d: unknown;
-    } & {
-        f: string;
-    } & {
         o: boolean;
+    } & {
+        t: boolean;
     }>;
     handler(args: yargs.Arguments): Promise<void>;
     /**

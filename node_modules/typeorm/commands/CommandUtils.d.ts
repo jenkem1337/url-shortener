@@ -1,7 +1,9 @@
+import { DataSource } from "../data-source";
 /**
  * Command line utils functions.
  */
 export declare class CommandUtils {
+    static loadDataSource(dataSourceFilePath: string): Promise<DataSource>;
     /**
      * Creates directories recursively.
      */
@@ -15,4 +17,8 @@ export declare class CommandUtils {
      */
     static readFile(filePath: string): Promise<string>;
     static fileExists(filePath: string): Promise<boolean>;
+    /**
+     * Gets migration timestamp and validates argument (if sent)
+     */
+    static getTimestamp(timestampOptionArgument: any): number;
 }

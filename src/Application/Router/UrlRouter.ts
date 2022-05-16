@@ -5,7 +5,7 @@ import RedisMiddlewareFactory from '../Factory/MiddlewareFactory/RedisMiddleware
 
 
 const urlRouter = Router()
-const urlController   =  FactoryCreator.initFactory(new UrlControllerFactory())
+const urlController   =  FactoryCreator.initFactory(new UrlControllerFactory)
 const redisMiddleware =  FactoryCreator.initFactory(new RedisMiddlewareFactory)
 
 //Middleware
@@ -16,5 +16,4 @@ urlRouter.get("/",                                        (req:Request,res:Respo
 urlRouter.get("/:url_code",                               (req:Request,res:Response) =>  urlController.redirectToOriginalUrl(req,res))
 urlRouter.post("/save-url" ,                              (req:Request,res:Response) =>  urlController.saveUrl(req,res))
 urlRouter.get("/find-by-urlcode/:url_code", urlCodeCache, (req:Request,res:Response) =>  urlController.findOneByUrlCode(req,res))
-
 export {urlRouter}

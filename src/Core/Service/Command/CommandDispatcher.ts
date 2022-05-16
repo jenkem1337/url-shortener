@@ -19,6 +19,7 @@ export default class CommandDispatcher implements IMediator{
         if(!commandHandler){
             throw new Error('this command handler doesnt exist')
         }
+
         return commandHandler.execute(command)   
     }
 

@@ -12,22 +12,24 @@
   "dependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
-    "@types/node": "^16.10.4",
     "@types/shortid": "0.0.29",
     "@types/validator": "^13.6.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4",
     "ioredis": "^4.28.0",
-    "pg": "^8.7.1",
+    "pg": "^8.7.3",
     "redis": "^4.0.0-rc.3",
     "redis-json": "^6.0.2",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",
     "tedis": "^0.1.12",
-    "ts-node": "^10.3.0",
-    "typeorm": "^0.2.38",
+    "typeorm": "^0.3.6",
     "uuidv4": "^6.2.13",
     "validator": "^13.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.35",
+    "nodemon": "^2.0.16"
   }
 }

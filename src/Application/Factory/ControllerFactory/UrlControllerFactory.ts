@@ -20,6 +20,7 @@ import QueryRequestStrategy from '../../../Core/Service/DispatcherStrategy/Query
 import CommandRequestStrategy from '../../../Core/Service/DispatcherStrategy/CommandRequestStrategy';
 import Query from '../../../Core/Service/Query/Query';
 import Command from '../../../Core/Service/Command/Command';
+import DatabaseConnection from '../../../Infrastructure/Data_Access/DataResource/DatabaseConnection';
 
 export default class UrlControllerFactory implements IFactory<UrlController>{
   
@@ -34,11 +35,11 @@ export default class UrlControllerFactory implements IFactory<UrlController>{
 
         
 
-        commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(new UrlFactory()), new UrlFactory()))
-          
-        queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory())))
-                        .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository(new UrlFactory())))
-                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(new UrlFactory()), new RedisRepository(new Redis())))
+        commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace() ), new UrlFactory()))
+
+        queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
+                        .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
+                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
 
         return new UrlController(new DispatcherContext(new Map<string, IRequestStrategy>([
             [

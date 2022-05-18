@@ -9,7 +9,7 @@ import ErrorResponse from "../../ResponseModel/ErrorResponse";
 import ApiResponse from '../../ResponseModel/ApiResponse';
 import HttpStatusCode from '../../ResponseModel/HttpStatus';
 
-export default class CreateNewShhortUrlCommandHandler implements ICommandHandler<UrlCreationCommand, Promise<ApiResponse>>{
+export default class CreateNewShhortUrlCommandHandler implements ICommandHandler<UrlCreationCommand>{
     
     private urlRepository: IUrlRepository
     private urlFactory: IFactory<Url>
@@ -19,17 +19,12 @@ export default class CreateNewShhortUrlCommandHandler implements ICommandHandler
         this.urlFactory = urlFactory
     }
 
-    async execute(command: UrlCreationCommand): Promise<ApiResponse> {
-        try {
+    execute(command: UrlCreationCommand):void {
+        
             let url = this.urlFactory.createInstance(
-                uuid(), command.getLongUrl(), command.getUrlCode(), command.getShortUrl(), 0 ,new Date())
+                uuid(), command.getLongUrl(), command.getUrlCode(), command.getShortUrl(), command.getHowManyTimeClicked() ,new Date())
             
-            await this.urlRepository.saveAndChanges(url)
-            
-            return new ApiResponse(HttpStatusCode.OK, new SavedUrlResponse(url.getUuid(), url.getUrlCode(), url.getLongUrl(), url.getShortUrl(), url.getHowMuchTimeClicked(), url.getWhenCreated() ))
-        } catch (error: any) {
-            return new ApiResponse(error.statusCode, new ErrorResponse(error.message) )
-        }
+            this.urlRepository.saveChanges(url)
     }
     
 }

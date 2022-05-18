@@ -7,7 +7,7 @@ export default class CommandRequestStrategy extends BaseMediatorComponent implem
             throw new Error('object is not command request objecet')
         }
 
-        return this.commandHandler.dispatch(obj)
+        this.commandHandler.dispatch(obj)
     }
 
 }

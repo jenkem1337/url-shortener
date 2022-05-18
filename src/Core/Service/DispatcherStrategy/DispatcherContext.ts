@@ -1,4 +1,5 @@
 import IRequestStrategy from './IRequestStrategy';
+import CommandRequestStrategy from './CommandRequestStrategy';
 
 export default class DispatcherContext {
     private strategyMap: Map<string, IRequestStrategy>
@@ -17,6 +18,7 @@ export default class DispatcherContext {
         }
 
         let strategy = <IRequestStrategy> this.strategyMap.get(parrentClass.constructor.name)
+     
         return strategy.executeStrategy(obj)
     }
         

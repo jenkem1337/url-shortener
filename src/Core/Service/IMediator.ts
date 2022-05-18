@@ -5,6 +5,6 @@ import IQueryHandler from "./Query/IQueryHandler"
 
 export default interface IMediator{
     dispatch<TRequest extends Command | Query>(req: TRequest):any
-    addService<THandler extends ICommandHandler<Command, any> | IQueryHandler<Query, any>>
+    addService<THandler extends ICommandHandler<Command> | IQueryHandler<Query, any>>
         (req: string, handler: THandler):IMediator
     }

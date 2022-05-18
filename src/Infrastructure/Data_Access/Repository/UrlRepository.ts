@@ -24,7 +24,7 @@ export default class UrlRepository implements IUrlRepository{
         let urlDomainObjects = allUrl.map(url => this.urlFactory.createInstance(url.id, url.longUrl, url.urlCode, url.shortUrl, url.howMuchTimeClicked, url.created_at))
         return urlDomainObjects
     }
-    async saveAndChanges(url: Url): Promise<void> {
+    async saveChanges(url: Url): Promise<void> {
         let orm_Url = new ORM_Url(url.getUuid(), url.getLongUrl(), url.getUrlCode(),url.getShortUrl(), url.getHowMuchTimeClicked(), url.getWhenCreated())
         
         await this.entityManager.manager.transaction(async transactionalEntityManager => {

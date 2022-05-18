@@ -6,10 +6,16 @@ export default class UrlCreationCommand extends Command {
     private longUrl:string
     private shortUrl:string
     private whenCreated:Date
-
+    private howManyTimeClicked:number
 
     public getUuid(): string {
         return this.uuid;
+    }
+    public getHowManyTimeClicked(){
+        return this.howManyTimeClicked
+    }
+    public setHowManyTimeClicked(c: number){
+        this.howManyTimeClicked = c
     }
 
     public setUuid(uuid: string): void {

@@ -21,6 +21,10 @@ import CommandRequestStrategy from '../../../Core/Service/DispatcherStrategy/Com
 import Query from '../../../Core/Service/Query/Query';
 import Command from '../../../Core/Service/Command/Command';
 import DatabaseConnection from '../../../Infrastructure/Data_Access/DataResource/DatabaseConnection';
+import SaveUrlCacheCommand from '../../../Core/Service/Command/RequestModel/SaveUrlCacheCommand';
+import SaveUrlCacheCommandHandler from '../../../Core/Service/Command/Handler/SaveUrlCacheCommandHandler';
+import IncrementUrlCounterCommand from '../../../Core/Service/Command/RequestModel/IncrementUrlCounterCommand';
+import IncrementUrlCounterCommandHandler from '../../../Core/Service/Command/Handler/IncrementUrlCoınterCommandHandler';
 
 export default class UrlControllerFactory implements IFactory<UrlController>{
   
@@ -36,6 +40,9 @@ export default class UrlControllerFactory implements IFactory<UrlController>{
         
 
         commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace() ), new UrlFactory()))
+                        .addService(SaveUrlCacheCommand.name, new SaveUrlCacheCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
+                        .addService(IncrementUrlCounterCommand.name, new IncrementUrlCounterCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()) ))
+
 
         queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
                         .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))

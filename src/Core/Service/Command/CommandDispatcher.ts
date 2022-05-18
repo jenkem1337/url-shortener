@@ -5,7 +5,7 @@ import BaseMediatorComponent from '../BaseMediatorCompnent';
 
 export default class CommandDispatcher implements IMediator{
     
-    private map: Map<string, ICommandHandler<Command,any>> = new Map<string, ICommandHandler<Command,any>>()
+    private map: Map<string, ICommandHandler<Command>> = new Map<string, ICommandHandler<Command>>()
     private baseMediatorComponent:BaseMediatorComponent
     
     constructor(baseMediatorComponent:BaseMediatorComponent){
@@ -20,10 +20,10 @@ export default class CommandDispatcher implements IMediator{
             throw new Error('this command handler doesnt exist')
         }
 
-        return commandHandler.execute(command)   
+        commandHandler.execute(command)   
     }
 
-    addService(command: string, commandHandler:ICommandHandler<Command,any>):CommandDispatcher{
+    addService(command: string, commandHandler:ICommandHandler<Command>):CommandDispatcher{
         this.map.set(command, commandHandler)
         return this
     }

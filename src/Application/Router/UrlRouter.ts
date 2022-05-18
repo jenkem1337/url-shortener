@@ -13,7 +13,7 @@ const urlCodeCache = (req:Request,res:Response,next:NextFunction) => redisMiddle
 
 
 urlRouter.get("/",                                        (req:Request,res:Response) =>  urlController.findAll(req, res))
-urlRouter.get("/:url_code",                               (req:Request,res:Response) =>  urlController.redirectToOriginalUrl(req,res))
-urlRouter.post("/save-url" ,                              (req:Request,res:Response) =>  urlController.saveUrl(req,res))
-urlRouter.get("/find-by-urlcode/:url_code", urlCodeCache, (req:Request,res:Response) =>  urlController.findOneByUrlCode(req,res))
+urlRouter.get("/:url_code",                               (req:Request,res:Response, next:NextFunction) =>  urlController.redirectToOriginalUrl(req,res, next))
+urlRouter.post("/save-url" ,                              (req:Request,res:Response, next:NextFunction) =>  urlController.saveUrl(req,res,next))
+urlRouter.get("/find-by-urlcode/:url_code", urlCodeCache, (req:Request,res:Response, next:NextFunction) =>  urlController.findOneByUrlCode(req,res, next))
 export {urlRouter}

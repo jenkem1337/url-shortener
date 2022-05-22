@@ -4,6 +4,7 @@ import RedirectionToOriginalUrlQuery from '../RequestModel/RedirectionToOriginal
 import IUrlRepository from '../../../Interface/IUrlRepository';
 import HttpStatusCode from '../../ResponseModel/HttpStatus';
 import RedirectLongUrlResponse from '../../ResponseModel/RedirectLongUrlResponse';
+import UrlDoesntExistException from '../../../Exception/UrlDoesntExistException';
 export default class RedirectToOriginalUrlQueryHandler implements IQueryHandler<RedirectionToOriginalUrlQuery ,Promise<ApiResponse>> {
     
     private urlRepository: IUrlRepository
@@ -15,6 +16,10 @@ export default class RedirectToOriginalUrlQueryHandler implements IQueryHandler<
     async execute(query: RedirectionToOriginalUrlQuery): Promise<ApiResponse> {
        
             let originalUrl = await this.urlRepository.findByUrlCode(query.getUrlCode())
+
+            if(!originalUrl){
+                throw new UrlDoesntExistException()
+            }
                         
             return new ApiResponse(HttpStatusCode.OK, new RedirectLongUrlResponse(originalUrl.getLongUrl()))
     }

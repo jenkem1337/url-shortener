@@ -15,7 +15,6 @@ export default class RedisRepository implements ICacheRepository{
 
     }
     public async getUrl(urlCode:string) {
-        return await this.client.hgetall(urlCode)
-        
+        return await this.client.hgetall(urlCode)        
     }
 }

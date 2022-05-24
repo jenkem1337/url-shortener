@@ -10,7 +10,7 @@ export default class FindCachedUrlByUrlCodeQueryHandler implements IQueryHandler
     }
     async execute(query: FindCachedUrlByUrlCodeQuery): Promise<object> {
         const url = await this.redisRepository.getUrl(query.getUrlCode())
-        
+           
         if(Object.keys(url).length !== 0){
             return url
         }

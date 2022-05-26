@@ -30,7 +30,6 @@ export default class UrlController{
     }
 
     public saveUrl(req:Request,res:Response, next:NextFunction){
-        try {
             const {longUrl} = req.body
         
             const creationalCommand = new UrlCreationCommand()
@@ -45,15 +44,11 @@ export default class UrlController{
                 .status(HttpStatusCode.OK)
                 .send(creationalCommand)
 
-        } catch (error) {
-            next(error)
-        }
 
 
     }
      
     public async findOneByUrlCode(req:Request,res:Response, next:NextFunction){
-        try {
             const {url_code} = req.params
         
             const urlCodeQuery = new UrlCodeQuery()
@@ -71,13 +66,9 @@ export default class UrlController{
                 .send(response.getResult())
     
 
-        } catch (error) {
-            next(error)
-        }
     }
 
     public async redirectToOriginalUrl(req:Request,res:Response, next:NextFunction){
-            try {
                 const {url_code} = req.params
                 
                 let incerementCounterCommand = new IncrementUrlCounterCommand()
@@ -95,9 +86,6 @@ export default class UrlController{
                 if(result instanceof RedirectLongUrlResponse){
                     res.redirect(result.getLongUrl())
                 }
-            } catch (error) {
-                next(error)
-            }
         
     }
 

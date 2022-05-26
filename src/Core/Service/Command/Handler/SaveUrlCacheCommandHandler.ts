@@ -17,7 +17,7 @@ export default class SaveUrlCacheCommandHandler implements ICommandHandler<SaveU
         if(!url){
             throw new UrlDoesntExistException()
         }
-        this.cacheRepository.saveUrl(url)
+        this.cacheRepository.saveChanges(url)
     }
     
 }

@@ -41,7 +41,7 @@ export default class UrlControllerFactory implements IFactory<UrlController>{
 
         commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace() ), new UrlFactory()))
                         .addService(SaveUrlCacheCommand.name, new SaveUrlCacheCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
-                        .addService(IncrementUrlCounterCommand.name, new IncrementUrlCounterCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()) ))
+                        .addService(IncrementUrlCounterCommand.name, new IncrementUrlCounterCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
 
 
         queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))

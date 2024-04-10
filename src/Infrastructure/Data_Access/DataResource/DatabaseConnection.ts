@@ -18,10 +18,11 @@ export default class DatabaseConnection {
                 entities: [ORM_Url],
                 synchronize: true
     
-            })          
+            })
+            DatabaseConnection.databaseResourceInstance.initialize().then(()=>console.log('Data Source has been initialized')).catch(e => console.log(e))
+     
         }
-        DatabaseConnection.databaseResourceInstance.initialize().then(()=>console.log('Data Source has been initialized')).catch(e => console.log(e))
-        return DatabaseConnection.databaseResourceInstance
+        return DatabaseConnection.databaseResourceInstance.manager
     }
 
     

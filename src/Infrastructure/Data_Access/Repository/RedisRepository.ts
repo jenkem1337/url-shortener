@@ -10,14 +10,7 @@ export default class RedisRepository implements ICacheRepository{
         
     }
     public async saveChanges(url: Url):Promise<void> {
-        let cachedUrl = await this.client.hgetall(url.getUrlCode())
-        if(cachedUrl){
-            await this.client.hmset(url.getUrlCode(), 'shortUrl', url.getShortUrl(), 'longUrl', url.getLongUrl(), 'howMuchTimeClicked', url.getHowMuchTimeClicked())
-            await this.client.expire(url.getUrlCode(), 60)    
-        }      
         await this.client.hmset(url.getUrlCode(), 'shortUrl', url.getShortUrl(), 'longUrl', url.getLongUrl(), 'howMuchTimeClicked', url.getHowMuchTimeClicked())
-        await this.client.expire(url.getUrlCode(), 60)
-
     }
     public async getUrl(urlCode:string):Promise<any> {
         return await this.client.hgetall(urlCode)        

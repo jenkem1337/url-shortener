@@ -1,11 +1,12 @@
-import {Column, Entity, PrimaryColumn } from "typeorm";
+import {Column, Entity, Index, PrimaryColumn } from "typeorm";
 
 @Entity()
 export default class ORM_Url{
     @PrimaryColumn()
     public id:string
 
-    @Column({unique: true})
+    @Index({unique: true})
+    @Column()
     public urlCode: string
 
     @Column()

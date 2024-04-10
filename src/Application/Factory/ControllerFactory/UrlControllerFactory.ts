@@ -46,7 +46,7 @@ export default class UrlControllerFactory implements IFactory<UrlController>{
 
         queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
                         .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
-                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
+                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
 
         return new UrlController(new DispatcherContext(new Map<string, IRequestStrategy>([
             [

@@ -9,11 +9,9 @@ import UrlDoesntExistException from '../../../Exception/UrlDoesntExistException'
 export default class FindOneByUrlCodeQueryHandler implements IQueryHandler<UrlCodeQuery, Promise<ApiResponse>> {
     
     private urlRepository: IUrlRepository
-    private cacheRepository: ICacheRepository
 
-    constructor(urlRepo: IUrlRepository, cacheRepo: ICacheRepository){
+    constructor(urlRepo: IUrlRepository){
         this.urlRepository = urlRepo
-        this.cacheRepository = cacheRepo
     }
     
     async execute(query: UrlCodeQuery): Promise<ApiResponse> {

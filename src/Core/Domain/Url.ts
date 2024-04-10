@@ -24,7 +24,7 @@ export default class Url extends BaseEntity{
         this.howManyTimeClicked = howManyTimeClicked
     }
 
-    private isLongUrlValid(longUrl){
+    private isLongUrlValid(longUrl:string){
         try {
             new URL(longUrl)
         } catch (error) {
@@ -32,8 +32,10 @@ export default class Url extends BaseEntity{
         }
     }
 
-    private isLongUrlEmpty(longUrl){
-        if(!longUrl) throw new LongUrlInputEmptyException
+    private isLongUrlEmpty(longUrl:string){
+        if(!longUrl) {
+            throw new LongUrlInputEmptyException()
+        }
     }
 
 

@@ -24,12 +24,15 @@
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",
     "tedis": "^0.1.12",
+    "ts-node": "^10.9.2",
     "typeorm": "^0.3.6",
+    "typescript": "^5.5.4",
     "uuidv4": "^6.2.13",
     "validator": "^13.6.0"
   },
   "devDependencies": {
-    "@types/node": "^16.11.35",
-    "nodemon": "^2.0.16"
+    "@types/node": "^16.18.104",
+    "nodemon": "^2.0.16",
+    "tslib": "^2.6.3"
   }
 }

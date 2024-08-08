@@ -30,23 +30,24 @@ export default class UrlControllerFactory implements IFactory<UrlController>{
   
     public createInstance():UrlController{
 
-        let queryRequestStrategy = new QueryRequestStrategy()
-        let commandRequestStrategy = new CommandRequestStrategy()
+        const queryRequestStrategy = new QueryRequestStrategy()
+        const commandRequestStrategy = new CommandRequestStrategy()
         
-        let queryDispatcher = new QueryDispatcher(queryRequestStrategy)
-        let commandDispatcher = new CommandDispatcher(commandRequestStrategy)
+        const queryDispatcher = new QueryDispatcher(queryRequestStrategy)
+        const commandDispatcher = new CommandDispatcher(commandRequestStrategy)
 
-
+        const urlFactory = new UrlFactory()
+        const urlRepository = new UrlRepository(urlFactory, DatabaseConnection.getInstace())
+        const redisRepository = new RedisRepository(new Redis(process.env.REDIS_PORT, process.env.REDIS_ADDR))
         
+        commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(urlRepository, urlFactory))
+                        .addService(SaveUrlCacheCommand.name, new SaveUrlCacheCommandHandler(urlRepository, redisRepository))
+                        .addService(IncrementUrlCounterCommand.name, new IncrementUrlCounterCommandHandler(urlRepository, redisRepository))
 
-        commandDispatcher.addService(UrlCreationCommand.name, new CreateNewShhortUrlCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace() ), new UrlFactory()))
-                        .addService(SaveUrlCacheCommand.name, new SaveUrlCacheCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
-                        .addService(IncrementUrlCounterCommand.name, new IncrementUrlCounterCommandHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace()), new RedisRepository(new Redis())))
 
-
-        queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
-                        .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
-                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(new UrlRepository(new UrlFactory(), DatabaseConnection.getInstace())))
+        queryDispatcher.addService(FindAllUrlQuery.name, new FindAllUrlQueryHandler(urlRepository))
+                        .addService(RedirectionToOriginalUrlQuery.name, new RedirectToOriginalUrlQueryHandler(urlRepository))
+                        .addService(UrlCodeQuery.name, new FindOneByUrlCodeQueryHandler(urlRepository))
 
         return new UrlController(new DispatcherContext(new Map<string, IRequestStrategy>([
             [

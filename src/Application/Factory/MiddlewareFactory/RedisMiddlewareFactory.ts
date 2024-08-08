@@ -19,7 +19,7 @@ export default class RedisMiddlewareFactory implements IFactory<RedisCacheMiddle
         let queryDispatcher = new QueryDispatcher(queryRequestStrategy)
 
         
-        queryDispatcher.addService(FindCachedUrlByUrlCodeQuery.name, new FindCachedUrlByUrlCodeQueryHandler(new RedisRepository(new Redis())))
+        queryDispatcher.addService(FindCachedUrlByUrlCodeQuery.name, new FindCachedUrlByUrlCodeQueryHandler(new RedisRepository(new Redis(new Number(process.env.REDIS_PORT).valueOf(), process.env.REDIS_ADDR))))
         
         return new RedisCacheMiddleware(new DispatcherContext(new Map<string, IRequestStrategy>([
             [

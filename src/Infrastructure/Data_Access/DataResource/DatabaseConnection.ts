@@ -10,11 +10,11 @@ export default class DatabaseConnection {
         if(!DatabaseConnection.databaseResourceInstance){
             DatabaseConnection.databaseResourceInstance = new DataSource({
                 type: "postgres",
-                host: "localhost",                                 
-                port: 5432,
-                username: "postgres",
-                password: "admin",
-                database: "postgres",
+                host: process.env.POSTGRES_HOST,                                 
+                port: new Number(process.env.POSTGRES_PORT).valueOf(),
+                username: process.env.POSTGRES_USERNAME,
+                password: process.env.POSTGRES_PASSWORD,
+                database: process.env.POSTGRES_DB_NAME,
                 entities: [ORM_Url],
                 synchronize: true
     

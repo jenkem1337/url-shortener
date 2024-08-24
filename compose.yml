@@ -1,0 +1,70 @@
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: url_shortener_db
+    restart: always
+    volumes:
+      - postgres-url-shortener-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - url-shortener-bridge
+  
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    restart: always
+    volumes:
+      - redis-url-shortener-volume:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - url-shortener-bridge
+  
+  frontend:
+    image: hasancansahan/url-shortener-frontend
+    container_name: frontend
+    restart: always
+
+    ports:
+      - "1234:1234"
+    depends_on:
+      - backend
+    networks:
+      - url-shortener-bridge
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: always
+
+    environment:
+      REDIS_PORT: 6379
+      REDIS_ADDR: redis
+      POSTGRES_HOST: postgres
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB_NAME: url_shortener_db
+      POSTGRES_PORT: 5432
+
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - url-shortener-bridge
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres-url-shortener-volume:
+  redis-url-shortener-volume:
+
+networks:
+  url-shortener-bridge: {}
